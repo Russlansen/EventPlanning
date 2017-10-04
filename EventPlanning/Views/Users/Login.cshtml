@@ -1,0 +1,32 @@
+﻿@model EventPlanning.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Вход</h2>
+
+@using (Html.BeginForm("Login", "Users", FormMethod.Post))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationMessage("error", new { @class = "text-danger" });
+    <table class="table table-striped">
+        <tr>
+            <td>@Html.LabelFor(x => x.Login)</td>
+            <td>@Html.TextBoxFor(x => x.Login, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.Login, null, new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Password)</td>
+            <td>@Html.PasswordFor(x => x.Password, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.Password, null, new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" class="btn btn-default" value="Войти"/></td>
+        </tr>
+    </table>
+    @Html.ActionLink("Регистрация", "Register", "Users")
+    if (Model.IsAuth) {
+      <span> | </span>  @Html.ActionLink("Выход", "Logout", "Users");
+    }
+    <p class="text-success">@ViewBag.Message</p>
+}

@@ -1,0 +1,16 @@
+﻿@model EventPlanning.ViewModels.IndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (!Model.IsAuth)
+{
+    <h3>Добро пожаловать, Гость</h3>
+    @Html.ActionLink("Регистрация", "Register", "Users") <span>|</span> @Html.ActionLink("Вход", "Login", "Users")
+}
+else
+{
+    <h3>Добро пожаловать, @Model.Login</h3>
+    @Html.ActionLink("Выход", "Logout", "Users");
+}
+

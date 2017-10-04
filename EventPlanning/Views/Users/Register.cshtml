@@ -1,0 +1,38 @@
+﻿@model EventPlanning.ViewModels.RegisterViewModel
+@{
+    ViewBag.Title = "Регистрация нового пользователя";
+}
+
+<h2>Регистрация нового пользователя</h2>
+
+@using (Html.BeginForm("Register", "Users", FormMethod.Post))
+{ 
+    <table class="table table-striped">
+        <tr>
+            <td>@Html.LabelFor(x => x.Login)</td>
+            <td>@Html.TextBoxFor(x => x.Login, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.Login, null, new { @class = "text-danger"})</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Email)</td>
+            <td>@Html.TextBoxFor(x => x.Email, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.Email, null, new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Password)</td>
+            <td>@Html.PasswordFor(x => x.Password, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.Password, null, new { @class = "text-danger"})</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.PasswordConfirm)</td>
+            <td>@Html.PasswordFor(x => x.PasswordConfirm, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.PasswordConfirm, null, new { @class = "text-danger", @type = "password" })</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input class="btn btn-default" type="submit" value="Регистрация" />
+            </td>
+        </tr>
+    </table>
+    @Html.ActionLink("Вход", "Login", "Users")
+}
