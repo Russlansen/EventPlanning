@@ -25,7 +25,7 @@
         </tr>
     </table>
     @Html.ActionLink("Регистрация", "Register", "Users")
-    if (Model.IsAuth) {
+    if (Model.IsAuthenticated) {
       <span> | </span>  @Html.ActionLink("Выход", "Logout", "Users");
     }
     <p class="text-success">@ViewBag.Message</p>

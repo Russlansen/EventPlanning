@@ -1,9 +1,10 @@
-﻿@model EventPlanning.ViewModels.IndexViewModel
+﻿<script src="~/Scripts/indexPageScript.js"></script>
+@model EventPlanning.ViewModels.IndexViewModel
 @{
     ViewBag.Title = "Index";
 }
 
-@if (!Model.IsAuth)
+@if (!Model.IsAuthenticated)
 {
     <h3>Добро пожаловать, Гость</h3>
     @Html.ActionLink("Регистрация", "Register", "Users") <span>|</span> @Html.ActionLink("Вход", "Login", "Users")
@@ -13,4 +14,87 @@ else
     <h3>Добро пожаловать, @Model.Login</h3>
     @Html.ActionLink("Выход", "Logout", "Users");
 }
-
+@if (Model.Events == null || Model.Events.Count == 0)
+{
+    <p>Нет событий</p>
+}
+else
+{
+        foreach (var _event in Model.Events)
+        {
+            <div class="panel panel-default event-item ">
+                <h4 class="text-center h4">@_event.Name</h4>
+                <table class="table table-striped">
+                    <tr>
+                        <td><b>Организатор:</b></td>
+                        <td> @_event.OwnerName</td>
+                    </tr>
+                    @if (_event.Theme.Count != 0)
+                    {
+                        foreach (var themes in _event.Theme)
+                        {
+                            if (!themes.Key.ToString().Contains("sub_"))
+                            {
+                                foreach (var item in themes.Value)
+                                {
+                                    <tr>
+                                        <td><b>@item.Key</b></td>
+                                        <td>@item.Value</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var item in themes.Value)
+                                {
+                                    <tr>
+                                        <td><i style="color:orangered;margin-left:15px;">@item.Key</i></td>
+                                        <td><i style="color:orangered;margin-left:15px;">@item.Value</i></td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+                    @if (_event.Date.HasValue)
+                    {
+                        <tr>
+                            <td><b>Дата:</b></td>
+                            <td><span>@_event.Date.Value.ToLongDateString() в @_event.Date.Value.ToShortTimeString()</span></td>
+                        </tr>
+                    }
+                    <tr>
+                        <td><b>Зарегистрировано:</b></td>
+                        <td> @_event.Users.Count()</td>
+                    </tr>
+                    <tr>
+                        @if (!_event.Users.Exists(x => x.UserName == Model.Login))
+                        {
+                            if (Model.IsAuthenticated)
+                            {
+                                <td colspan="2">
+                                    @Html.ActionLink("Принять участие", "RegisterForTheEvent", "Events",
+                                                                                new { eventId = _event.Id }, null)
+                                </td>
+                            }
+                            else
+                            {
+                                <td colspan="2">Для регистрации выполните @Html.ActionLink("Вход", "Login", "Users")</td>
+                            }
+                        }
+                        else
+                        {
+                            <td colspan="2"><b class="text-success">Вы уже зарегистрированы</b></td>
+                        }
+                    </tr>
+                </table>
+            </div>
+        } 
+}
+@if (Model.IsAuthenticated)
+{
+    @Html.ActionLink("Добавить событие", "AddEvent", "Events")
+}
+else
+{
+    <p>Чтоб добавить новое событие выполните @Html.ActionLink("Вход", "Login", "Users")</p>
+}

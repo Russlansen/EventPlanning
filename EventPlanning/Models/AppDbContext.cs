@@ -17,6 +17,7 @@ namespace EventPlanning.Models
         {
             return new AppDbContext();
         }
+        public DbSet<Event> Events { get; set; }
     }
 
     internal class AppDbInit : DropCreateDatabaseIfModelChanges<AppDbContext>

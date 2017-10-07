@@ -1,0 +1,35 @@
+﻿<script src="~/Scripts/AddEventScript.js"></script>
+@model EventPlanning.ViewModels.AddEventViewModel
+@{
+    ViewBag.Title = "Добавление нового события";
+}
+
+<h2>Добавление нового события</h2>
+
+@using (Html.BeginForm("AddEvent", "Events", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.OwnerName)
+
+    <table class="table table-striped">
+        <tr>
+            <td class="col-md-5">@Html.LabelFor(x => x.Name)</td>
+            <td>@Html.TextBoxFor(x => x.Name, new { @class = "form-control" })</td>
+            <td colspan="2">@Html.ValidationMessageFor(x => x.Name, null, new { style = "color:red"})</td>
+        </tr>
+        <tr data-count="0" data-group="theme">
+            <td class="col-md-5"><textarea name="Theme[0].Key" type="text" class="form-control" placeholder="Введите тему"></textarea></td>
+            <td class="col-md-5"><textarea name="Theme[0].Value" type="text" class="form-control" placeholder="Введите описание"></textarea></td>
+            <td colspan="2"><input type="button" id="addSubTheme" class="btn btn-info" value="Добавить подтему"></td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Date)</td>
+            <td colspan="3">@Html.TextBoxFor(x => x.Date, new { type = "datetime-local", @class = "form-control" })</td>
+            
+        </tr>
+        <tr>
+            <td><input type="submit" class="btn btn-default" value="Добавить"></td>
+            <td colspan="3"><input type="button" id="addTheme" class="btn btn-info" value="Добавить тему"></td>
+        </tr>
+    </table>
+}
+

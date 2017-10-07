@@ -61,7 +61,7 @@ namespace EventPlanning.Controllers
         public ActionResult Login(string returnUrl, string message)
         {
             var model = new LoginViewModel();
-            model.IsAuth = HttpContext.User.Identity.IsAuthenticated;
+            model.IsAuthenticated = HttpContext.User.Identity.IsAuthenticated;
             ViewBag.returnUrl = returnUrl;
             ViewBag.Message = message;
             return View(model);

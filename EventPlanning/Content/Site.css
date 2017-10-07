@@ -3,16 +3,26 @@
     padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
     max-width: 280px;
 }
 
+.event-main {
+    margin-top: 15px;
+}
+
+.event-item {
+    padding: 5px;
+}
+.sub-field{
+    margin-top:5px;
+    margin-left:15px;
+    background-color:antiquewhite;
+}

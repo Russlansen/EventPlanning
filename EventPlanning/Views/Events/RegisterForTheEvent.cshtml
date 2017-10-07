@@ -1,0 +1,18 @@
+﻿@model EventPlanning.ViewModels.RegisterForTheEventViewModel
+@{
+    ViewBag.Title = "Регистрация на мероприятие";
+}
+<h2>Регистрация на мероприятие</h2>
+@using (Html.BeginForm("RegisterForTheEvent", "Events", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x._User.UserName)
+    @Html.HiddenFor(x => x._Event.Id)
+    <h4><b>@Model._Event.Name</b></h4>
+    <p>Пожалуста подтвердите E-mail</p>
+    @Html.TextBoxFor(x => x._User.Email, new { @class = "form-control", type = "email"})
+    <p class="text-danger">@Html.ValidationMessageFor(x => x._User.Email)</p>
+    <br />
+    <input type="submit" value="Подтвердить" class="btn btn-default">
+}
+
+<h5 class="text-success">@ViewBag.Message</h5>

@@ -14,6 +14,6 @@ namespace EventPlanning.ViewModels
         [Required(AllowEmptyStrings = false, ErrorMessage = "Введите пароль")]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
-        public bool IsAuth { get; set; }
+        public bool IsAuthenticated { get; set; }
     }
 }
