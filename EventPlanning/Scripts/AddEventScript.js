@@ -1,27 +1,26 @@
 ﻿$(function () {
     var count = 1;
-
+    $("#Limit").val("");
     function remove() {
-        var row = this.closest("tr")
+        var row = this.closest("tr");
         count--;
         row.remove();
         var trTheme = $("tr[data-group='theme']");
-        for(i = 0; i < count; i++)
-        {
+        for (i = 0; i < count; i++) {
             trTheme[i].setAttribute("data-count", i);
             var cellTheme = trTheme[i].children[0];
             var cellDesc = trTheme[i].children[1];
             var childrenCount = cellTheme.childElementCount;
             for (var j = 0; j < childrenCount; j++) {
-                if (j == 0) {
+                if (j === 0) {
                     cellTheme.children[j].setAttribute("name", "Theme[" + i + "].Key");
                     cellDesc.children[j].setAttribute("name", "Theme[" + i + "].Value");
                 } else {
                     cellTheme.children[j].setAttribute("name", "Theme[" + i + "].SubTheme.Key");
                     cellDesc.children[j].setAttribute("name", "Theme[" + i + "].SubTheme.Value");
-                }  
+                }
             }
-        }         
+        }
     }
 
     function removeSubTheme() {
@@ -44,17 +43,17 @@
     $("#addSubTheme").click(addSubTheme);
 
     function addSubTheme() {
-        var row = this.closest("tr")
+        var row = this.closest("tr");
         var localCount = $(this).closest('tr').data('count');
-        row.children[0].innerHTML += "<textarea type=\"text\"  name=\"Theme["+localCount+"].SubTheme.Key\" class=\"sub-field form-control\" placeholder=\"Введите подтему\"></textarea>";
-        row.children[1].innerHTML += "<textarea type=\"text\" name=\"Theme["+localCount+"].SubTheme.Value\" class=\"sub-field form-control\" placeholder=\"Введите описание\"></textarea>";
+        row.children[0].innerHTML += "<textarea type=\"text\"  name=\"Theme[" + localCount + "].SubTheme.Key\" class=\"sub-field form-control\" placeholder=\"Введите подтему\"></textarea>";
+        row.children[1].innerHTML += "<textarea type=\"text\" name=\"Theme[" + localCount + "].SubTheme.Value\" class=\"sub-field form-control\" placeholder=\"Введите описание\"></textarea>";
         var removeBtn = document.createElement('input');
         removeBtn.setAttribute("type", "button");
         removeBtn.setAttribute("class", "btn btn-danger");
         removeBtn.setAttribute("value", "Удалить подтему");
         removeBtn.addEventListener("click", removeSubTheme);
         row.children[2].lastChild.remove();
-        row.children[2].appendChild(removeBtn)
+        row.children[2].appendChild(removeBtn);
     }
 
     $("#addTheme").click(function () {
@@ -79,8 +78,8 @@
         addSubBtn.setAttribute("value", "Добавить подтему");
         addSubBtn.addEventListener("click", addSubTheme);
 
-        tdTitle.innerHTML = "<textarea type=\"text\" name=\"Theme["+count+"].Key\" class=\"form-control\" placeholder=\"Введите тему\"></textarea>";
-        tdDescription.innerHTML = "<textarea type=\"text\" name=\"Theme["+count+"].Value\" class=\"form-control\" placeholder=\"Введите описание\"></textarea>";
+        tdTitle.innerHTML = "<textarea type=\"text\" name=\"Theme[" + count + "].Key\" class=\"form-control\" placeholder=\"Введите тему\"></textarea>";
+        tdDescription.innerHTML = "<textarea type=\"text\" name=\"Theme[" + count + "].Value\" class=\"form-control\" placeholder=\"Введите описание\"></textarea>";
         tdRemove.appendChild(removeBtn);
         tdAddSubTheme.appendChild(addSubBtn);
 
@@ -89,5 +88,16 @@
         tr.appendChild(tdAddSubTheme);
         tr.appendChild(tdRemove);
         $("table tr").eq(count++).after(tr);
-    })  
-})
+    });
+
+    $("#allowLimit").change(function () {
+        var limit = $("#Limit");
+        if ($(this).prop("checked") === true) {
+            limit.prop("disabled", false);
+            limit.val(1);
+        } else {
+            limit.val("");
+            limit.prop("disabled", true);
+        }
+    });
+});

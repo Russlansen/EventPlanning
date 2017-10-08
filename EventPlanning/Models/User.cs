@@ -9,5 +9,8 @@ namespace EventPlanning.Models
         [Key]
         public override string UserName { get => base.UserName; set => base.UserName = value; }
         public List<Event> Events { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
     }
 }

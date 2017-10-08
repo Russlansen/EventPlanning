@@ -15,7 +15,10 @@ namespace EventPlanning.Models
         public Dictionary<string, Dictionary<string,string>> Theme{ get; set; }
         public string OwnerName { get; set; }
         public DateTime? Date { get; set; }
+        public int? Limit { get; set; }
         public List<User> Users { get; set; }
+        [NotMapped]
+        public bool AllowRegistration { get; set; }
 
         public Event(){}
 
@@ -25,6 +28,7 @@ namespace EventPlanning.Models
             ThemesJson = JsonConvert.SerializeObject(model.Theme);
             OwnerName = model.OwnerName;
             Date = model.Date;
+            Limit = model.Limit;
         }
     }
     

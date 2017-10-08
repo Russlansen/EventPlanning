@@ -1,0 +1,32 @@
+﻿@model EventPlanning.ViewModels.SetAdditionalInfoViewModel
+@{
+    ViewBag.Title = "Укажите дополнительную информацию";
+}
+
+<h2>Укажите дополнительную информацию</h2>
+@using (Html.BeginForm("SetAdditionalInfo", "Users", FormMethod.Post))
+{
+    <table class="table table-striped">
+        <tr>
+            <td>@Html.LabelFor(x => x.FirstName)</td>
+            <td>@Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.FirstName, null, new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.LastName)</td>
+            <td colspan="2">@Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.PhoneNumber)</td>
+            <td colspan="2">@Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Age)</td>
+            <td>@Html.TextBoxFor(x => x.Age, new { @class = "form-control" , type = "number"})</td>
+            <td>@Html.ValidationMessageFor(x => x.Age, null, new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td colspan="3"><input class="btn btn-default" type="submit" value="Добавить"></td>
+        </tr>
+    </table>
+}

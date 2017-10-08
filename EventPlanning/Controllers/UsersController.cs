@@ -64,7 +64,7 @@ namespace EventPlanning.Controllers
                     ModelState.AddModelError("error", "Некорректное имя или пароль.");
                 }
                 else
-                {
+                { 
                     ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user,
                         DefaultAuthenticationTypes.ApplicationCookie);
 
@@ -73,7 +73,11 @@ namespace EventPlanning.Controllers
                     {
                         IsPersistent = false
                     }, ident);
-                    if (returnUrl != null)
+                    if (string.IsNullOrEmpty(user.FirstName))
+                    {
+                        return RedirectToAction("SetAdditionalInfo", "Users");
+                    }
+                    else if (returnUrl != null)
                         return Redirect(returnUrl);
                     else
                         return RedirectToAction("Index", "Home");
@@ -81,11 +85,13 @@ namespace EventPlanning.Controllers
             }
             return View(model);
         }
+
         public ActionResult Logout()
         {
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
+
         [HttpPost]
         public ActionResult Check(string name)
         {
@@ -105,7 +111,31 @@ namespace EventPlanning.Controllers
                     Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     return Content("Имя уже занято", MediaTypeNames.Text.Plain);
                 }
-            }    
+            }
+        }
+        [Authorize]
+        public ActionResult SetAdditionalInfo()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult SetAdditionalInfo(SetAdditionalInfoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var db = new AppDbContext();
+                var name = HttpContext.User.Identity.Name;
+                var user = db.Users.Where(x => x.UserName == name).FirstOrDefault();
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Age = model.Age;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+            return View(model);
         }
 
         private AppUserManager UserManager

@@ -13,6 +13,13 @@ namespace EventPlanning.Binders
             var ownerName = (string)valueProvider.GetValue("OwnerName").ConvertTo(typeof(string));
             var name = (string)valueProvider.GetValue("Name").ConvertTo(typeof(string));
             var dateResult = valueProvider.GetValue("Date").RawValue as string[];
+            var limitResult = valueProvider.GetValue("Limit");
+            int? limit = null;
+            try
+            {
+                limit = (int?)limitResult.ConvertTo(typeof(int?));
+            }
+            catch (NullReferenceException) { }
             DateTime? date = null;
             if (!String.IsNullOrEmpty(dateResult[0]))
             {
@@ -53,7 +60,7 @@ namespace EventPlanning.Binders
                 }
             }
             
-            var bind = new AddEventViewModel() { OwnerName = ownerName, Name = name, Date = date, Theme = theme};
+            var bind = new AddEventViewModel() { OwnerName = ownerName, Name = name, Date = date, Theme = theme, Limit = limit};
 
             return bind;
         }

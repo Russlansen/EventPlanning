@@ -7,6 +7,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Text.RegularExpressions;
 
 namespace EventPlanning.Controllers
 {
@@ -90,16 +91,24 @@ namespace EventPlanning.Controllers
         [Authorize]
         public ActionResult ConfirmRegistration(string email, string name, int? eventId)
         {
-            if(!String.IsNullOrEmpty(email) && !String.IsNullOrEmpty(name) && eventId != null)
+            
+            if (!String.IsNullOrEmpty(email) && !String.IsNullOrEmpty(name) && eventId != null)
             {
+                string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
+                Match isMatch = Regex.Match(email.ToLower(), pattern, RegexOptions.IgnoreCase);
+                if (!isMatch.Success)
+                    return RedirectToAction("Index", "Home");
                 var db = new AppDbContext();
                 var _event = db.Events.Include(x => x.Users).Where(x => x.Id == eventId).FirstOrDefault();
                 var _user = db.Users.Where(x => x.UserName == name).FirstOrDefault();
-                _event.Users.Add(_user);
-                db.SaveChanges();
-                var successMsg = "Вы успешно зарегистрировались";
-                return RedirectToAction("RegisterForTheEvent", "Events",
-                                                new { eventId = eventId, message = successMsg });
+                if(_event.Limit == null || (_event.Limit > _event.Users.Count))
+                {
+                    _event.Users.Add(_user);
+                    db.SaveChanges();
+                    var successMsg = "Вы успешно зарегистрировались";
+                    return RedirectToAction("RegisterForTheEvent", "Events",
+                                                    new { eventId = eventId, message = successMsg });
+                }
             }
             return RedirectToAction("Index", "Home");
         }

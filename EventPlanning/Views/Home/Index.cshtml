@@ -69,12 +69,16 @@ else
                 <tr>
                     @if (!_event.Users.Exists(x => x.UserName == Model.Login))
                     {
-                        if (Model.IsAuthenticated)
+                        if (Model.IsAuthenticated && _event.AllowRegistration)
                         {
                             <td colspan="2">
                                 @Html.ActionLink("Принять участие", "RegisterForTheEvent", "Events",
                                                                             new { eventId = _event.Id }, null)
                             </td>
+                        }
+                        else if (!_event.AllowRegistration)
+                        {
+                            <td colspan="2"><p class="text-danger">Зарегестрировано максимальное количество пользователей</p></td>
                         }
                         else
                         {

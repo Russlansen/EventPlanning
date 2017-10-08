@@ -15,6 +15,8 @@ namespace EventPlanning.ViewModels
         public string OwnerName { get; set; }
         [Display(Name = "Дата проведения")]
         public DateTime? Date { get; set; }
+        [Display(Name = "Лимит участников")]
+        public int? Limit { get; set; } 
 
         public AddEventViewModel()
         {

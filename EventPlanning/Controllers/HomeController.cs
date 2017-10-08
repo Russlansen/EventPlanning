@@ -22,6 +22,10 @@ namespace EventPlanning.Controllers
             {
                 _event.Theme = JsonConvert.DeserializeObject
                                     <Dictionary<string, Dictionary<string, string>>>(_event.ThemesJson);
+                if (_event.Limit == null)
+                    _event.AllowRegistration = true;
+                else
+                    _event.AllowRegistration = _event.Limit > _event.Users.Count();
             }
             return View(model);
         }
