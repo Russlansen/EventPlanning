@@ -1,17 +1,18 @@
-﻿@model EventPlanning.ViewModels.RegisterViewModel
+﻿<script src="~/Scripts/RegisterScript.js"></script>
+@model EventPlanning.ViewModels.RegisterViewModel
 @{
     ViewBag.Title = "Регистрация нового пользователя";
 }
 
 <h2>Регистрация нового пользователя</h2>
 
-@using (Html.BeginForm("Register", "Users", FormMethod.Post))
-{ 
+@using (Html.BeginForm("Register", "Users", FormMethod.Post, new { id = "form"}))
+{
     <table class="table table-striped">
         <tr>
             <td>@Html.LabelFor(x => x.Login)</td>
             <td>@Html.TextBoxFor(x => x.Login, new { @class = "form-control" })</td>
-            <td>@Html.ValidationMessageFor(x => x.Login, null, new { @class = "text-danger"})</td>
+            <td><span id="errorMsg">@Html.ValidationMessageFor(x => x.Login, null, new { @class = "text-danger" })</span></td>
         </tr>
         <tr>
             <td>@Html.LabelFor(x => x.Email)</td>
@@ -30,7 +31,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input class="btn btn-default" type="submit" value="Регистрация" />
+                <input class="btn btn-default" id="submit" type="submit" value="Регистрация" />
             </td>
         </tr>
     </table>

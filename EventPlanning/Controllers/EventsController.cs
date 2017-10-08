@@ -76,7 +76,7 @@ namespace EventPlanning.Controllers
                                                                   name = model._User.UserName,
                                                                   eventId = model._Event.Id }));
                 var messageBuilder = new StringBuilder();
-                messageBuilder.AppendFormat("Подтвердите регистрацию на мероприятие {0}", model._Event.Name);
+                messageBuilder.AppendFormat("Подтвердите регистрацию на мероприятие \"{0}\"", model._Event.Name);
                 messageBuilder.AppendFormat(" перейдя по этой {0}", linkBuilder.ToString());
                 message.Body = messageBuilder.ToString();
                 smtp.Send(message);

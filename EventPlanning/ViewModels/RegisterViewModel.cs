@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using System.Web.Mvc;
 
 namespace EventPlanning.ViewModels
 {
@@ -19,7 +19,7 @@ namespace EventPlanning.ViewModels
         [Display(Name = "Введите пароль")]
         public string Password { get; set; }
 
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Пароли не совпадают")]
         [Display(Name = "Повторите пароль")]
         public string PasswordConfirm { get; set; }
 

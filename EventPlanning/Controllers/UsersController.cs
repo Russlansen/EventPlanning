@@ -3,9 +3,9 @@ using EventPlanning.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,22 +15,6 @@ namespace EventPlanning.Controllers
 {
     public class UsersController : Controller
     {
-        private AppUserManager UserManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-            }
-        }
-
-        private IAuthenticationManager AuthManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
         public ActionResult Register()
         {
             return View();
@@ -94,13 +78,50 @@ namespace EventPlanning.Controllers
                     else
                         return RedirectToAction("Index", "Home");
                 }
-            } 
+            }
             return View(model);
         }
         public ActionResult Logout()
         {
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public ActionResult Check(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content("Обязательное поле", MediaTypeNames.Text.Plain);
+            }
+            else
+            {
+                var db = new AppDbContext();
+                var checkUsers = db.Users.Where(x => x.UserName == name);
+                if (checkUsers.Count() == 0)
+                    return Content("Имя свободно", MediaTypeNames.Text.Plain);
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Content("Имя уже занято", MediaTypeNames.Text.Plain);
+                }
+            }    
+        }
+
+        private AppUserManager UserManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+            }
+        }
+
+        private IAuthenticationManager AuthManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
         }
     }
 }
